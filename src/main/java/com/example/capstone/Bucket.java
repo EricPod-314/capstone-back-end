@@ -1,59 +1,61 @@
 package com.example.capstone;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import java.util.UUID;
-
-import javax.persistence.*;
-
+@Entity
 public class Bucket {
-    
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    private String tag;
-    private double percent;
-    private long amount;
-    private UUID accountId;
+    private String name;
+    private Double percent;
+    private Long amount;
+    private Long accountId;
 
-    public Bucket(String tag, double percent, long amount, UUID accountId){
-        this.tag = tag;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Double getPercent() {
+        return percent;
+    }
+
+    public void setPercent(Double percent) {
         this.percent = percent;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
         this.amount = amount;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
-    public String getTag(){
-        return this.tag;
-    }
-
-    public void setTag(String tag){
-        this.tag = tag;
-    }
-
-    public double getPercent(){
-        return this.percent;
-    }
-
-    public void setPercent(double percent){
-        this.percent = percent;
-    }
-
-    public long getAmount(){
-        return this.amount;
-    }
-
-    public void setAmount(long amount){
-        this.amount = amount;
-    }
-
-    public UUID getAccountId(){
-        return this.accountId;
-    }
-
-    public void setAccountId(UUID accountId){
-        this.accountId = accountId;
-    }
 }
