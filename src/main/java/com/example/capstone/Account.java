@@ -12,7 +12,7 @@ public class Account {
     private Long id;
     private String userName;
     private String password;
-    private Long amountForMonth;
+    private Double amountForMonth;
 
     public Long getId() {
         return id;
@@ -38,11 +38,11 @@ public class Account {
         this.password = password;
     }
 
-    public Long getAmountForMonth() {
+    public Double getAmountForMonth() {
         return amountForMonth;
     }
 
-    public void setAmountForMonth(Long amountForMonth) {
+    public void setAmountForMonth(Double amountForMonth) {
         this.amountForMonth = amountForMonth;
     }
 
