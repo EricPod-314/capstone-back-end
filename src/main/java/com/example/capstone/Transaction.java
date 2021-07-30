@@ -13,7 +13,7 @@ public class Transaction {
     private Long AccountId;
     private String displayName;
     private String bucketTag;
-    private Long amount;
+    private Double amount;
     private String date;
 
 
@@ -49,11 +49,11 @@ public class Transaction {
         this.bucketTag = bucketTag;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

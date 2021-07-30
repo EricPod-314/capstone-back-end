@@ -14,8 +14,8 @@ public class Bucket {
     private Long accountId;
     private String name;
     private Double percent;
-    private Long amountGoal;
-    private Long amountSpent;
+    private Double amountGoal;
+    private Double amountSpent;
 
     public Long getId() {
         return id;
@@ -45,19 +45,19 @@ public class Bucket {
         this.percent = percent;
     }
 
-    public Long getAmountGoal() {
+    public Double getAmountGoal() {
         return amountGoal;
     }
 
-    public void setAmountGoal(Long amountGoal) {
+    public void setAmountGoal(Double amountGoal) {
         this.amountGoal = amountGoal;
     }
 
-    public Long getAmountSpent() {
+    public Double getAmountSpent() {
         return amountSpent;
     }
 
-    public void setAmountSpent(Long amountSpent) {
+    public void setAmountSpent(Double amountSpent) {
         this.amountSpent = amountSpent;
     }
 
