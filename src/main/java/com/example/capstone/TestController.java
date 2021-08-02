@@ -17,9 +17,18 @@ public class TestController {
     @Autowired
     BucketRepo repo;
 
+    @Autowired
+    TransactionRepo trepo;
+
     @GetMapping("/test")
     public String testing() {
         return "Hello World";
+    }
+
+    @GetMapping("/getTransaction")
+    public List<Transaction> getAllTransactions(){
+        System.out.println(trepo.findAll());
+        return trepo.findAll();
     }
 
     @GetMapping("/getAll")
