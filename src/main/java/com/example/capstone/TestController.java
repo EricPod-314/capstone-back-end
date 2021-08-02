@@ -21,16 +21,27 @@ public class TestController {
 
     @Autowired
     AccountRepo accountRepo;
+  
+    @Autowired
+    TransactionRepo trepo;
 
+  
     private static double roundToTwo(double value) {   
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
 
+    
     @GetMapping("/test")
     public String testing() {
         return "Hello World";
+    }
+
+    @GetMapping("/getTransaction")
+    public List<Transaction> getAllTransactions(){
+        System.out.println(trepo.findAll());
+        return trepo.findAll();
     }
 
     @GetMapping("/getAll")
