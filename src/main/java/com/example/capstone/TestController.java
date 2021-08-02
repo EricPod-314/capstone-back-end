@@ -1,5 +1,7 @@
 package com.example.capstone;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +20,19 @@ public class TestController {
     BucketRepo repo;
 
     @Autowired
+    AccountRepo accountRepo;
+  
+    @Autowired
     TransactionRepo trepo;
 
+  
+    private static double roundToTwo(double value) {   
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    
     @GetMapping("/test")
     public String testing() {
         return "Hello World";
@@ -48,10 +61,17 @@ public class TestController {
     @PutMapping("/editBucket/{id}")
     public void editBucket(@PathVariable Long id, @RequestBody Map<String, String> Data){
         Bucket bucket = repo.findById(id).get();
-        
+
         Double percent = Double.parseDouble(Data.get("percent"));
 
+        Account account = accountRepo.findById(bucket.getAccountId()).get();
+        //Percent is stored as an int, must /100 for the math
+        Double newGoal = account.getAmountForMonth() * (percent/100);
+        Double rounded = roundToTwo(newGoal);
+
+
         bucket.setPercent(percent);
+        bucket.setAmountGoal(rounded);
         repo.save(bucket);
     }
 }
