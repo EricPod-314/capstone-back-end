@@ -98,4 +98,13 @@ public class TestController {
         }
 
     }
+    @PostMapping("/newSpendingMonth")
+    public void newSpendingMonth(@RequestBody Account data){
+        Long accountId = data.getId();
+        List<Bucket> buckets = repo.findByAccountId(accountId);
+        for(Bucket i: buckets){
+            i.setAmountSpent(0.0);
+            repo.save(i);
+        }
+    }
 }
