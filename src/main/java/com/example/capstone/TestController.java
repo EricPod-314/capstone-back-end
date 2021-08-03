@@ -74,4 +74,11 @@ public class TestController {
         bucket.setAmountGoal(rounded);
         repo.save(bucket);
     }
+    
+    @PostMapping("/addTransaction")
+    public void addTransaction(@RequestBody Transaction t){
+
+        trepo.save(t);
+
+    }
 }
