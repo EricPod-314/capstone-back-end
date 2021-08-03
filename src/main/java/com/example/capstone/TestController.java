@@ -58,6 +58,14 @@ public class TestController {
     public List<Bucket> getById(@PathVariable Long id) {
         return repo.findByAccountId(id);
     }
+
+    @PostMapping("/addTransaction")
+    public void addTransaction(@RequestBody Transaction t){
+
+        trepo.save(t);
+
+    }
+
     @PutMapping("/editBucket")
     public void editBucket(@RequestBody EditObject data){
         
@@ -65,6 +73,7 @@ public class TestController {
             Account account = accountRepo.getById(data.getAccountId());
             account.setAmountForMonth(data.getIncome());
             accountRepo.save(account);
+
 
             List<Bucket> buckets = repo.findAll();
             for(Bucket bucket : buckets) {
@@ -107,4 +116,6 @@ public class TestController {
             repo.save(i);
         }
     }
+    
+
 }
