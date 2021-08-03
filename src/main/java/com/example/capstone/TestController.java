@@ -58,6 +58,14 @@ public class TestController {
     public List<Bucket> getById(@PathVariable Long id) {
         return repo.findByAccountId(id);
     }
+
+    @PostMapping("/addTransaction")
+    public void addTransaction(@RequestBody Transaction t){
+
+        trepo.save(t);
+
+    }
+
     @PutMapping("/editBucket/{id}")
     public void editBucket(@PathVariable Long id, @RequestBody Map<String, String> Data){
         Bucket bucket = repo.findById(id).get();
@@ -75,10 +83,5 @@ public class TestController {
         repo.save(bucket);
     }
     
-    @PostMapping("/addTransaction")
-    public void addTransaction(@RequestBody Transaction t){
 
-        trepo.save(t);
-
-    }
 }
