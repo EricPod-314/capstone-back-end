@@ -2,11 +2,7 @@ package com.example.capstone;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,6 +68,15 @@ public class TestController {
 
         t.setDate(newstring);
         trepo.save(t);
+
+        List<Bucket> buckets = repo.findByAccountId(t.getAccountId());
+        for(Bucket bucket : buckets) {
+            if(bucket.getName().equals(t.getBucketTag())) {
+                bucket.setAmountSpent(bucket.getAmountSpent() + t.getAmount());
+                repo.save(bucket);
+                break;
+            }
+        }
 
     }
 
