@@ -66,21 +66,55 @@ public class TestController {
 
     }
 
-    @PutMapping("/editBucket/{id}")
-    public void editBucket(@PathVariable Long id, @RequestBody Map<String, String> Data){
-        Bucket bucket = repo.findById(id).get();
-
-        Double percent = Double.parseDouble(Data.get("percent"));
-
-        Account account = accountRepo.findById(bucket.getAccountId()).get();
-        //Percent is stored as an int, must /100 for the math
-        Double newGoal = account.getAmountForMonth() * (percent/100);
-        Double rounded = roundToTwo(newGoal);
+    @PutMapping("/editBucket")
+    public void editBucket(@RequestBody EditObject data){
+        
+        if (data.getIncome() != 0) {
+            Account account = accountRepo.getById(data.getAccountId());
+            account.setAmountForMonth(data.getIncome());
+            accountRepo.save(account);
 
 
-        bucket.setPercent(percent);
-        bucket.setAmountGoal(rounded);
-        repo.save(bucket);
+            List<Bucket> buckets = repo.findAll();
+            for(Bucket bucket : buckets) {
+                bucket.setAmountGoal(data.getIncome() * (bucket.getPercent()/100) );
+                repo.save(bucket);
+            }
+        }
+
+
+        for(Bucket object : data.getBuckets()){
+
+           if(object.getPercent() == null) {
+                continue;
+            }
+
+            Bucket bucket = repo.findById(object.getId()).get();
+
+            Double percent = object.getPercent();
+
+
+            Account account = accountRepo.findById(data.getAccountId()).get();
+            //Percent is stored as an int, must /100 for the math
+            Double newGoal = account.getAmountForMonth() * (percent/100);
+            Double rounded = roundToTwo(newGoal);
+    
+    
+            bucket.setPercent(percent);
+            bucket.setAmountGoal(rounded);
+            repo.save(bucket);
+
+        }
+
+    }
+    @PostMapping("/newSpendingMonth")
+    public void newSpendingMonth(@RequestBody Account data){
+        Long accountId = data.getId();
+        List<Bucket> buckets = repo.findByAccountId(accountId);
+        for(Bucket i: buckets){
+            i.setAmountSpent(0.0);
+            repo.save(i);
+        }
     }
     
 
