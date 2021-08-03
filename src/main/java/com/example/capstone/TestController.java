@@ -2,6 +2,9 @@ package com.example.capstone;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +64,13 @@ public class TestController {
 
     @PostMapping("/addTransaction")
     public void addTransaction(@RequestBody Transaction t){
+        String date = t.getDate();
+        String year = date.substring(0,4);
+        String month = date.substring(5,7);
+        String day = date.substring(8,10);
+        String newstring = month + "/" + day + "/" + year;
 
+        t.setDate(newstring);
         trepo.save(t);
 
     }
