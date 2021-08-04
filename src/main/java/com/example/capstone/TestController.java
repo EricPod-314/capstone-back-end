@@ -25,25 +25,20 @@ public class TestController {
     @Autowired
     TransactionRepo trepo;
 
-  
+    //Rounding function (Used in edit bucket mapping)
     private static double roundToTwo(double value) {   
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
 
-    
-    @GetMapping("/test")
-    public String testing() {
-        return "Hello World";
-    }
 
     @GetMapping("/getTransaction")
     public List<Transaction> getAllTransactions(){
         System.out.println(trepo.findAll());
         return trepo.findAll();
     }
-
+    
     @GetMapping("/getAll")
     public List<Bucket> getAll() {
         return repo.findAll();
@@ -61,6 +56,7 @@ public class TestController {
 
     @PostMapping("/addTransaction")
     public void addTransaction(@RequestBody Transaction t){
+        //Date Formating
         String date = t.getDate();
         String year = date.substring(0,4);
         String month = date.substring(5,7);
@@ -69,7 +65,8 @@ public class TestController {
 
         t.setDate(newstring);
         trepo.save(t);
-
+        
+        //update the amount spent with new transaction
         List<Bucket> buckets = repo.findByAccountId(t.getAccountId());
         for(Bucket bucket : buckets) {
             if(bucket.getName().equals(t.getBucketTag())) {
@@ -84,20 +81,20 @@ public class TestController {
     @PutMapping("/editBucket")
     public void editBucket(@RequestBody EditObject data){
         
+        //Grab Account
         if (data.getIncome() != 0) {
             Account account = accountRepo.getById(data.getAccountId());
-            account.setAmountForMonth(data.getIncome());
+            account.setAmountForMonth(data.getIncome());//update the budget with income
             accountRepo.save(account);
-
 
             List<Bucket> buckets = repo.findAll();
             for(Bucket bucket : buckets) {
-                bucket.setAmountGoal(data.getIncome() * (bucket.getPercent()/100) );
+                bucket.setAmountGoal(data.getIncome() * (bucket.getPercent()/100) );//Set each bucket's budget amount with percentage
                 repo.save(bucket);
             }
         }
 
-
+        //Updating each bucket that was edited
         for(Bucket object : data.getBuckets()){
 
            if(object.getPercent() == null) {
@@ -114,7 +111,7 @@ public class TestController {
             Double newGoal = account.getAmountForMonth() * (percent/100);
             Double rounded = roundToTwo(newGoal);
     
-    
+            
             bucket.setPercent(percent);
             bucket.setAmountGoal(rounded);
             repo.save(bucket);
@@ -127,6 +124,7 @@ public class TestController {
         Long accountId = data.getId();
         List<Bucket> buckets = repo.findByAccountId(accountId);
         for(Bucket i: buckets){
+            //reset the spent data for buckets
             i.setAmountSpent(0.0);
             repo.save(i);
         }
